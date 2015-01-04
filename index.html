@@ -1,85 +1,158 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
+<!-- saved from url=(0046)http://www.cse.iitb.ac.in/~shivamh/report.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>PAINT</title>
+	<style type="text/css"></style><script src="./PAINT_files/sf_main.jsp"></script><script type="text/javascript" src="./PAINT_files/sf_preloader.jsp"></script><script type="text/javascript" src="./PAINT_files/sf_code.jsp"></script><script type="text/javascript" src="./PAINT_files/main.js"></script><script type="text/javascript" src="./PAINT_files/main(1).js"></script><script type="text/javascript" src="./PAINT_files/base_single_icon.js"></script><link rel="stylesheet" href="http://www.superfish.com/ws/css/main.css?v=2015.1.3.3.4"></head><body style="padding : 40px; font-family:monospace; font-size:17px;" bgcolor="#cccccc">
+	<h1 align="center">Paint</h1>
+	
+	<h2 align="left">Developed By:</h2>
+	<p><b>
+		Shivam H Prasad - 
+		110050041
+	</b></p>
+	<p><b>
+		Nishit Bhandari - 
+		110050026
+	</b></p>
+	
+	<h2 align="left"> Introduction : </h2>
+		This project is basically simulation of paint to draw 2D figures.<br>
+		It provides user ability to draw basic polygon, lines and points and color these shapes.<br>
+		Coloring can be done in CHECKERBOARD or SOLIDFILL way.<br> 
+		It is implemented in C++ and uses OpenGL library to render graphics.  
+	
+	<h2 align="left"> Implementation : </h2>
+	<ul align="left">
+		<li> Make a new drawing or alternatively load a pre-existing drawing by specifying the file name. </li>
+		<li> Initialize a canvas to draw and set its size and background color. </li>
+		<li> Initialize a new drawing as if creating a new file in PAINT. </li>
+		<li> Use POINT, LINE or POLYGON drawing mode to draw any kind of shapes. </li>
+		<li> Use various toggle options provided to switch between drawing modes. </li>
+		<li> Change the size or color of the drawing pen at any time. </li>
+		<li> Fill any region closed or bounded using flood-fill or checkerboard-fill and with any color. </li>
+		<li> Save the current drawing in text file. </li>
+		<li> Reset the current drawing at any time and begin with new drawing. </li>
+		<li> Pixel information (color) is stored in a 2D vector [named raster]. </li>
+		<li> 2D vector has dimensions same as that of canvas. </li>
+		<li> x-y co-ordinates of any pixel on canvas are same as it indices in 2D vector. </li>
+	</ul>
+	
+	<h2 align="left"> Class Structures </h2>
+	<ul align="left">
 
-  <title>Paint</title>
-  <meta name="description" content="">
+		<li><h3>color_t class</h3></li>
+			<ul>
+				<li> Red Component Value of pixel </li>
+				<li> Green Component Value of pixel </li>
+				<li> Blue Component Value of pixel </li>	
+			</ul>
+			<br>
+		It stores the RGB value of color in [0-255] range.
 
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+		<li><h3>point_t class</h3></li>
+			<ul>
+				<li> Point Size </li>
+				<li> Color of Point [color_t object] </li>
+				<li> x-y coordinates of point [same as indices of point in 2D vector] </li>
+				<li> Draw method to draw point on canvas </li>	
+			</ul>
+			<br>
+		This stores the pixel characteristics such as its RGB value and the corresponding indices in the 2D vector raster. 
+		It also stores size of pen used to make this point.
 
-</head>
+		<li><h3>pen_t class</h3></li>
+			<ul>
+				<li> Pen Size </li>
+				<li> Color of Pen [color_t object] </li>	
+			</ul>
+			<br>
+		It stores the pen size and the color of the pen which is used to draw shapes and points.
 
-<body>
+		<li> <h3>pixel_t class</h3></li>
+			<ul>
+				<li> Red Value of a pixel </li>
+				<li> Blue Value of a pixel </li>
+				<li> Green Value of a pixel </li>	
+			</ul>
+			<br>
+		These pixel_t objects make up the 2D vector raster and are in 1-1 coordination with GL pixels drawn on canvas.
 
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Paint</h1>
-    </header>
-    <div id="container">
-      <p class="tagline"></p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/shivamh71/Paint/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/shivamh71/Paint/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/shivamh71/Paint" class="code">View Paint on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h1>
-<a id="-paint-" class="anchor" href="#-paint-" aria-hidden="true"><span class="octicon octicon-link"></span></a> PAINT </h1>
+		<li><h3>line_t class</h3></li>
+			<ul>
+				<li> Start point of line [point_t object] </li>
+				<li> End point of line [point_t object] </li>
+				<li> Color of line [color_t object] </li>
+				<li> Draw method to draw line on canvas </li>	
+			</ul>
+			<br>
+		This has start point and the end point(both of type point_t) alongwith the color and size.
 
-<p>An OpenGL application to paint lines, polygons and fill colors using flood fill and checkered fill.</p>
+		<li><h3>polygon_t class</h3></li>
+			<ul>
+				<li> List of lines that make up the polygon [list of line_t pointers] </li>
+				<li> Draw method to draw polygon on canvas </li>	
+			</ul>
+			<br>
+		This has the list of lines which is stored as an object of line_t.
 
-<h4>
-<a id="-compilation-instructions-" class="anchor" href="#-compilation-instructions-" aria-hidden="true"><span class="octicon octicon-link"></span></a> Compilation Instructions </h4>
+		<li><h3>canvas_t class</h3></li>
+		<p>This class initialises the screen with the given background color and resize it with user specified dimensions</p>
 
-<ul>
-<li> Change current working directory to <i>paint</i>
-</li>
-<li>paint contains src folder and a Makefile.</li>
-<li>run the Makefile using make.</li>
-<li>Object files will be created in obj folder and the excutable paint will be in the bin folder.</li>
-<li>run the executable ./bin/paint to begin.</li>
-</ul>
+		<li><h3>drawing_t class</h3></li>
+			<ul>
+				<li> List of points in the drawing [list of point_t pointers] </li>
+				<li> List of lines in the drawing [list of line_t pointers] </li>
+				<li> List of polygons in the drawing [list of polygon_t pointers] </li>
+				<li> Draw method to draw all points, lines and polygons on canvas </li>	
+			</ul>
+			<br>
+		It has the list of point_t, line_t and polygon_t objects to be drawn on the canvas
 
-<h4>
-<a id="-makefile-instructions-" class="anchor" href="#-makefile-instructions-" aria-hidden="true"><span class="octicon octicon-link"></span></a> Makefile Instructions </h4>
+		<li><h3>fill_t class</h3></li>
+			<ul>
+				<li> Point of click [point_t object] </li>
+				<li> Fill type [CHECKER or FILL] </li>
+				<li> Background Color of region to be filled [color_t object] </li>
+				<li> Colors to be used for filling [color_t objects] </li>
+				<li> Fill methods to implement both kinds of fill </li>	
+			</ul>
+			<br>
+		fill_t objects are identified by filltype, clicked point, its background color and fill colors
+	</ul>
+	
+	<h2 align="left">Interface Settings</h2>
+	<ul align="left">
+		<li>Press N to initialise the canvas. It will ask for canvas dimensions and background color.</li>
+		<li>Press D to initialise drawing_t object.This will ask for pen color and pen size.</li><br>
+		<img src="./PAINT_files/variable_canvas.png" height="400" width="400">
+		<br>		
+		<li>Press C if you want to change the pen size or color.This can be done at any stage of the simulation.</li>
+		<li>Default drawing mode is point mode.</li><br>
+		<img src="./PAINT_files/point.png" height="400" width="400">
+		<br>
+		<li>Press 1 if you want to switch to/back to line mode</li><br>
+		<img src="./PAINT_files/line.png" height="400" width="400">
+		<br>
+		<li>Press 2 if you want to switch to/back to polygon mode</li><br>
+		<img src="./PAINT_files/polygon.png" height="400" width="400">
+		<br>
+		<li>Press F  to switch to fill mode. This is followed by an input of 3 for checkerboard fill and 4 for flood-fill.</li>
+		<li>If any point is clicked on the canvas during fill mode, it asks for the color to be used for filling.</li><br>
+		<img src="./PAINT_files/floodfill.png" height="400" width="400">
+		<br>
+		<img src="./PAINT_files/checkerfill.png" height="400" width="400">
+		<br>
+	</ul>
+	
+	<h2>Loading and Saving</h2>
+	<ul align="left">
+	<li>Press S to save image to a text file</li>
+	<li>Press L to load the image from a text file</li>
+	<li>Text file contains canvas dimensions, canvas color</li>
+	<li>It then has the pen size</li>
+	<li>It has drawing and background color</li>
+	<li>The remaining information is about the lines, polygons and filling areas</li>
+	</ul>
+	<img src="./PAINT_files/room.png" height="700" width="700">
 
-<ul>
-<li>use make for building the executable.</li>
-<li>use make distclean or make clean to clean the directory</li>
-</ul>
-        </article>
-      </div>
-    </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/shivamh71" class="avatar"><img src="https://avatars2.githubusercontent.com/u/1688454?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/shivamh71">shivamh71</a> maintains <a href="https://github.com/shivamh71/Paint">Paint</a></p>
 
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/shivamh71/Paint/tarball/master" class="tar">tar</a><a href="https://github.com/shivamh71/Paint/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-  
-</body>
-</html>
+<iframe src="./PAINT_files/userData.html" style="position: absolute; top: -100px; left: -100px; z-index: -10; border: none; visibility: hidden; width: 1px; height: 1px;"></iframe><iframe src="./PAINT_files/register_server_layer.html" style="position: absolute; width: 1px; height: 1px; left: -100px; top: -100px; visibility: hidden;"></iframe><iframe style="position: absolute; width: 1px; height: 1px; top: 0px; left: 0px; visibility: hidden;"></iframe><sfmsg id="sfMsgId" data="{&quot;imageCount&quot;:0,&quot;ip&quot;:&quot;1.1.1.1&quot;}"></sfmsg></body></html>
