@@ -1,6 +1,8 @@
 <h1> PAINT </h1>
 An OpenGL application to paint lines, polygons and fill colors using flood fill and checkered fill.
 
+<h4> Implementation details can be found <a href="http://shivamh71.github.io/Paint/"> here </a></h4>
+
 <h4> Compilation Instructions </h4>
 <ul>
 <li> Change current working directory to <i>paint</i></li>
